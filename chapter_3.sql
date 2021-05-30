@@ -210,62 +210,62 @@ FROM employees
 WHERE salary = SOME (2000, 3000, 4000)
 ORDER BY employee_id;
 
-select employee_id, salary
-from employees
-where not(salary >= 2500)
-order by employee_id;
+SELECT employee_id, salary
+FROM employees
+WHERE NOT(salary >= 2500)
+ORDER BY employee_id;
 
-select employee_id, salary
-from employees
-where salary between 2000 and 2500
-order by employee_id;
+SELECT employee_id, salary
+FROM employees
+WHERE salary BETWEEN 2000 AND 2500
+ORDER BY employee_id;
 
-select employee_id, salary
-from employees
-where salary in (2000, 3000, 4000)
-order by employee_id;
+SELECT employee_id, salary
+FROM employees
+WHERE salary IN (2000, 3000, 4000)
+ORDER BY employee_id;
 
-select employee_id, salary
-from employees
-where salary not in (2000, 3000, 4000)
-order by employee_id;
+SELECT employee_id, salary
+FROM employees
+WHERE salary NOT IN (2000, 3000, 4000)
+ORDER BY employee_id;
 
-select department_id, department_name
-from departments a
-where exists (select *
-                from employees b
-                where a.department_id = b.department_id
-                and b.salary > 3000)
-order by a.department_name;
+SELECT department_id, department_name
+FROM departments A
+WHERE EXISTS (SELECT *
+                FROM employees b
+                WHERE A.department_id = b.department_id
+                AND b.salary > 3000)
+ORDER BY A.department_name;
 
-select emp_name 
-from employees
-where emp_name like 'A%'
-order by emp_name;
+SELECT emp_name 
+FROM employees
+WHERE emp_name LIKE 'A%'
+ORDER BY emp_name;
                 
-select emp_name 
-from employees
-where emp_name like 'Al%'
-order by emp_name;
+SELECT emp_name 
+FROM employees
+WHERE emp_name LIKE 'Al%'
+ORDER BY emp_name;
 
-create table ex3_5(names VARCHAR2(30));
+CREATE TABLE ex3_5(NAMES VARCHAR2(30));
 
-insert into ex3_5 values ('È«±æµ¿');
-insert into ex3_5 values ('È«±æ»óµ¿');
-insert into ex3_5 values ('È«±æ¿ë');
-insert into ex3_5 values ('È«±æ»ó');
+INSERT INTO ex3_5 VALUES ('È«±æµ¿');
+INSERT INTO ex3_5 VALUES ('È«±æ»óµ¿');
+INSERT INTO ex3_5 VALUES ('È«±æ¿ë');
+INSERT INTO ex3_5 VALUES ('È«±æ»ó');
 
-select* from ex3_5
-where names Like 'È«±æ%';
+SELECT* FROM ex3_5
+WHERE NAMES LIKE 'È«±æ%';
 
-select* from ex3_5
-where names Like 'È«±æ_';
+SELECT* FROM ex3_5
+WHERE NAMES LIKE 'È«±æ_';
 
 --¿¬½À¹®Á¦
 -- 1
 CREATE TABLE ex3_6(
     employee_id     NUMBER,
-    emp_name        VARCHAR2(100),
+    emp_name        VARCHAR2(80),
     salary          NUMBER,
     manager_id      NUMBER
 );
@@ -292,7 +292,7 @@ GROUP BY E.employee_id;
 
 commit;
 select *  from ex3_3;
-
+¤»
 --select employee_id , salary, manager_id from employees where manager_id = 145;
 
 MERGE INTO ex3_3 A
