@@ -65,14 +65,60 @@ from employees
 where 4500<=salary AND salary <=5000
 order by employee_id;
 
+--0601
 
+--1
+SELECT REPLACE(LPAD(phone_number, 17, '(031)'), '.', '-') FROM employees;
+SELECT REPLACE(LPAD(SUBSTR(phone_number, 4), 14, '(031)'), '.', '-') 
+FROM employees;
 
+select SUBSTR(phone_number, 5) from employees;
 
+--2
+SELECT employee_id 사원번호, emp_name 사원명 , hire_date 입사일자, round((sysdate - hire_date)/365) 근속년수 
+FROM employees
+WHERE round((sysdate - hire_date)/365) >= 22
+ORDER BY 근속년수;
 
+--3
+SELECT cust_name, TRANSLATE(cust_main_phone_number, '0123456789-', 'abcdefghijk')
+FROM customers
+ORDER BY cust_name;
 
+--4
+CREATE TABLE exam3(
+	NAME VARCHAR2(100),
+	new_phone_number    VARCHAR2(25)
+);
 
+--5
+INSERT INTO exam3(NAME, new_phone_number)
+SELECT cust_name, 
+       TRANSLATE(cust_main_phone_number, '0123456789-', 'abcdefghijk')
+FROM customers;
 
+--6
+SELECT NAME, TRANSLATE(new_phone_number, 'abcdefghijk', '0123456789-')
+FROM exam3;
 
+--7
+SELECT cust_name, cust_year_of_birth, 
+  CASE WHEN 1950<= cust_year_of_birth AND cust_year_of_birth <1960 THEN '1950년대'
+       WHEN 1960<= cust_year_of_birth AND cust_year_of_birth <1970 THEN '1960년대'
+       WHEN 1970<= cust_year_of_birth AND cust_year_of_birth <1980 THEN '1970년대'
+       WHEN 1980<= cust_year_of_birth AND cust_year_of_birth <1990 THEN '1980년대'
+       WHEN 1990<= cust_year_of_birth AND cust_year_of_birth <2000 THEN '1990년대'
+       ELSE '기타'
+       END AS generation
+FROM customers;
 
+--8
+SELECT to_char(hire_date, 'yyyy') AS hire_year, COUNT(*)
+FROM employees
+GROUP BY to_char(hire_date, 'yyyy');
 
-
+--9
+SELECT region, SUM(loan_jan_amt) AS totl_jan
+FROM kor_loan_status
+WHERE PERIOD LIKE '2011%'
+GROUP BY region;
