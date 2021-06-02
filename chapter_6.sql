@@ -1,44 +1,14 @@
--- 내부조인과 외부조인    176p
-
--- 동등 조인            176p
-SELECT A.employee_id, A.emp_name, b.department_id, b.department_name
-  FROM employees A, departments b
- WHERE A.department_id = b.department_id;
-
-
-
---세미 조인             177p
-SELECT department_id, department_name
-  FROM departments;
-
-SELECT department_id
-FROM employees b
-WHERE b.salary > 3000
-order by b.department_id;
-
-SELECT department_id, department_name
-  FROM departments A
- WHERE EXISTS(SELECT *
-              FROM employees b
-              WHERE A.department_id = b.department_id
-              AND b.salary > 3000)
-ORDER BY A.department_id;
-
-SELECT department_id, department_name
-  FROM departments A
- WHERE A.department_id IN (SELECT b.department_id
-                           FROM employees b
-                           WHERE b.salary > 3000)
-ORDER BY A.department_id;
-
-SELECT A.department_id, A.department_name
-FROM departments A, employees b
-WHERE A.department_id = b.department_id
-AND b.salary > 3000
-ORDER BY A.department_name;
-
-
---안티조인  179p
+SELECT
+    a.employee_id,
+    a.emp_name,
+    b.job_id,
+    b.department_id
+FROM
+    employees  a,
+    job_history  b
+WHERE
+        a.employee_id = b.employee_id (+)
+    AND a.department_id = b.department_id(+);
 
 SELECT
     a.employee_id,
@@ -46,35 +16,43 @@ SELECT
     a.department_id,
     b.department_name
 FROM
+    employees a,
+    departments b;
+    
+--ANSI 조인  184p
+SELECT
+    a.employee_id,
+    a.emp_name,
+    b.department_id,
+    b.department_name
+FROM
     employees    a,
     departments  b
 WHERE
         a.department_id = b.department_id
-    AND a.department_id NOT IN (
-        SELECT
-            department_id
-        FROM
-            departments
-        WHERE
-            manager_id IS NULL
-    );
-                           
- -- 셀프 조인 180p
+    AND a.hire_date >= TO_DATE('2003-01-01', 'yyyy-mm-dd');
+
+
 SELECT
     a.employee_id,
     a.emp_name,
-    b.employee_id,
-    b.emp_name,
-    a.department_id
+    b.department_id,
+    b.department_name
 FROM
-    employees  a,
-    employees  b
-WHERE
-        a.employee_id < b.employee_id
-    AND a.department_id = b.department_id
-    AND a.department_id = 20;
-                           
---외부 조인     181p
+    employees a
+INNER JOIN departments b ON ( a.department_id = b.department_id )
+WHERE a.hire_date >= TO_DATE('2003-01-01', 'yyyy-mm-dd');
+
+select a.employee_id, a.emp_name, b.department_id, b.department_name
+from employees a,
+     departments b
+where a.department_id = b.department_id
+and a.hire_date >= to_date('2013-01-01', 'yyyy-mm-dd');
+
+
+
+
+
 
 
 
