@@ -13,7 +13,8 @@ SELECT department_id, department_name
 
 SELECT department_id
 FROM employees b
-WHERE b.salary > 3000;
+WHERE b.salary > 3000
+order by b.department_id;
 
 SELECT department_id, department_name
   FROM departments A
@@ -28,6 +29,53 @@ SELECT department_id, department_name
  WHERE A.department_id IN (SELECT b.department_id
                            FROM employees b
                            WHERE b.salary > 3000)
+ORDER BY A.department_id;
+
+SELECT A.department_id, A.department_name
+FROM departments A, employees b
+WHERE A.department_id = b.department_id
+AND b.salary > 3000
 ORDER BY A.department_name;
+
+
+--안티조인  179p
+
+SELECT
+    a.employee_id,
+    a.emp_name,
+    a.department_id,
+    b.department_name
+FROM
+    employees    a,
+    departments  b
+WHERE
+        a.department_id = b.department_id
+    AND a.department_id NOT IN (
+        SELECT
+            department_id
+        FROM
+            departments
+        WHERE
+            manager_id IS NULL
+    );
+                           
+ -- 셀프 조인 180p
+SELECT
+    a.employee_id,
+    a.emp_name,
+    b.employee_id,
+    b.emp_name,
+    a.department_id
+FROM
+    employees  a,
+    employees  b
+WHERE
+        a.employee_id < b.employee_id
+    AND a.department_id = b.department_id
+    AND a.department_id = 20;
+                           
+--외부 조인     181p
+
+
 
 
