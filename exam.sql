@@ -68,7 +68,6 @@ order by employee_id;
 --0601
 
 --1
-SELECT REPLACE(LPAD(phone_number, 17, '(031)'), '.', '-') FROM employees;
 SELECT REPLACE(LPAD(SUBSTR(phone_number, 4), 14, '(031)'), '.', '-') 
 FROM employees;
 
@@ -111,7 +110,15 @@ SELECT cust_name, cust_year_of_birth,
        ELSE '기타'
        END AS generation
 FROM customers;
-
+--
+SELECT cust_name, cust_year_of_birth, 
+       decode( mod( round(( cust_year_of_birth / 10 ),10),10), 5, '50년대',
+                                                         6, '60년대',
+                                                         7, '70년대',
+                                                         8, '80년대',
+                                                         9, '90년대',
+                                                         '기타') ger
+from customers;
 --8
 SELECT to_char(hire_date, 'yyyy') AS hire_year, COUNT(*)
 FROM employees
