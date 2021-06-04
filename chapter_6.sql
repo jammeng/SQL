@@ -392,7 +392,7 @@ SELECT emp.years,
        ) sale
   WHERE emp.years = sale.years
     AND emp.amount_sold = sale.max_sold 
-  ORDER BY years
+  ORDER BY years;
 
 
 SELECT emp.years, 
@@ -430,3 +430,55 @@ SELECT emp.years,
     AND emp.amount_sold = sale.max_sold 
     AND emp.employee_id = emp2.employee_id
 ORDER BY years;
+
+--연습문제 205p
+--1
+SELECT E.employee_id 사번, E.emp_name 사원명, S.job_title job명칭, j.start_date job시작일자, j.end_date job종료일자, D.department_name job수행부서명
+  FROM employees E,
+       job_history j,
+       departments D,
+       jobs S
+ WHERE E.employee_id = j.employee_id 
+   AND j.department_id = D.department_id 
+   AND j.job_id = S.job_id
+   AND E.employee_id = 101;
+
+--2
+SELECT A.employee_id, A.emp_name, b.job_id, b.department_id 
+  FROM employees A,
+       job_history b
+ WHERE A.employee_id   = b.employee_id(+)
+   AND A.department_id = b.department_id(+);
+   
+--3
+--4
+SELECT a.department_id, a.department_name
+  FROM departments a, employees b
+ WHERE a.department_id = b.department_id
+   AND b.salary > 3000
+ORDER BY a.department_name;
+
+SELECT a.department_id, a.department_name
+  FROM departments a 
+  INNER JOIN employees b
+   ON (a.department_id = b.department_id)
+ WHERE b.salary > 3000
+ORDER BY a.department_name;
+
+--5
+SELECT a.department_id, a.department_name
+ FROM departments a
+WHERE EXISTS ( SELECT 1 
+                 FROM job_history b
+                WHERE a.department_id = b.department_id );
+
+SELECT a.department_id, a.department_name
+ FROM departments a
+WHERE a.department_id IN ( SELECT b.department_id 
+                      FROM job_history b);
+
+
+
+
+
+
