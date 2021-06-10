@@ -34,7 +34,7 @@ SELECT LOWER('NEVER SAY GOODBYE'), UPPER('never say goodbye') FROM DUAL;
 
 SELECT CONCAT('I Have',' A Dream'), 'I Have' || ' A Dream' FROM DUAL; 
 
-SELECT SUBSTR('ABCDEFG', 1, 4), SUBSTR('ABCDEFG', -1, 4) FROM DUAL;
+SELECT SUBSTR('ABCDEFG', 1, 4), SUBSTR('ABCDEFG', -2) FROM DUAL;
 
 SELECT SUBSTRB('ABCDEFG', 1, 4), SUBSTRB('가나다라마바사', 1, 6) FROM DUAL; -- 현재 환경은 한글을 한글자에 3바이트로 인식
 
@@ -73,7 +73,7 @@ SELECT EMPLOYEE_ID,
 TRANSLATE(EMP_NAME, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'thehillsarealivewhitthesou') AS TRANS_NAME FROM EMPLOYEES;
 
 SELECT
-    INSTR('내가 만약 외로울 때면,내가 만약 괴로울때면,내가 만약 즐거울 때면', '만약')                AS INSTR1,
+    INSTR('내가 만약 외로울 때면,내가 만약 괴로울때면,내가 만약 즐거울 때면', ' ')                AS INSTR1,
     INSTR('내가 만약 외로울 때면, 내가 만약 괴로울때면, 내가 만약 즐거울 때면', '만약', 5)           AS INSTR2,
     INSTR('내가 만약 외로울 때면, 내가 만약 괴로울때면, 내가 만약 즐거울 때면', '만약', 5, 2)        AS INSTR3,
     instr('내가 만약 외로울 때면, 내가 만약 괴로울때면, 내가 만약 즐거울 때면', '약', 5, 2) as instr4
