@@ -616,28 +616,13 @@ END;
    INITCAP과 똑같이 동작하는 my_initcap 이란 이름으로 함수를 만들어보자. 
    (단 여기서는 공백 한 글자로 단어 사이를 구분한다고 가정한다)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 CREATE OR REPLACE FUNCTION my_initcap (input_string VARCHAR2)
     RETURN VARCHAR2
 IS
     vs_string VARCHAR2(80) := input_string;
     vn_pos NUMBER := 1;
     vn_length NUMBER;    
-    vs_return VARCHAR2(300);
+    vs_return VARCHAR2(100);
 BEGIN
     while vn_pos != 0
     LOOP
@@ -655,37 +640,6 @@ END;
 
 SELECT my_initcap('happy birth day to you') string
 from DUAL;
-
-
-select instr('happybirthdaytoyzu', ' ') from dual;
-select instr('happy birth day to you', ' ', 6, 2) from dual2;
-select instr('happy birth day to you', ' ', 12, 2) from dual3;
-select instr('happy birth day to you', ' ', 16, 2) from dual4;
-select instr('happy birth day to you', ' ', 19, 2) from dual5;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <정답>
 
@@ -723,7 +677,51 @@ END;
 
 3. 날짜형 SQL 함수 중에는 해당 월 마지막 일자를 반환하는 LAST_DAY란 함수가 있다.
    매개변수로 문자형으로 일자를 받아, 해당 일자의 월 마지막 날짜를 문자형으로 반환하는 함수를 my_last_day란 이름으로 만들어 보자.
-   
+
+
+CREATE OR REPLACE FUNCTION my_last_day ( input_date VARCHAR2 )
+    RETURN VARCHAR2
+IS
+    vs_input_string VARCHAR2(20);
+    vs_return_date VARCHAR2(20);
+    vs_year VARCHAR2(100);
+    vs_month VARCHAR2(100);
+BEGIN
+    vs_input_string := REPLACE(input_date, '-', '');
+    IF LENGTH(vs_input_string) <> 8 THEN
+        vs_input_string := '입력값 오류';
+    ELSE
+        vs_year := SUBSTR(vs_input_string, 1, 4);
+        vs_month := SUBSTR(vs_input_string, 5, 2);
+        
+        IF vs_month = 12 THEN
+            vs_year := TO_CHAR(TO_NUMBER(vs_year)+1);
+            vs_month := '01';
+        ELSE
+            vs_month := TRIM(TO_CHAR(TO_NUMBER(vs_month)+1, '00'));
+        END IF;
+        
+        vs_return_date := TO_CHAR(TO_DATE(vs_year || vs_month || '01', 'YYYY-MM-DD') -1, 'YYYYMMDD');
+    END IF;
+    
+    RETURN vs_return_date;
+END;
+
+SELECT my_last_day('2021-12-11') ddate
+FROM DUAL;
+
+
+
+
+
+
+
+
+
+
+
+
+
 <정답>   
    
 CREATE OR REPLACE FUNCTION my_last_day ( p_input_date VARCHAR2)
