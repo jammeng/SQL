@@ -867,7 +867,85 @@ END ;
 (1) 매개변수 : 부서번호, 부서명, 상위부서번호, 동작 flag 
 (2) 동작 flag 매개변수 값은 'upsert' -> 데이터가 있으면 UPDATE, 아니면 INSERT
                             'delete' -> 해당 부서 삭제
-(3) 삭제 시, 만약 해당 부서에 속한 사원이 존재하는지 사원테이블을 체크해 존재하면 경고메시지와 함께 delete를 하지 않는다. 
+(3) 삭제 시, 만약 해당 부서에 속한 사원이 존재하는지 사원테이블을 체크해 존재하면 경고메시지와 함께 delete를 하지 않는다.
+
+CREATE OR REPLACE PROCEDURE my_dept_manage_proc
+          ( p_department_id     IN ch09_departments.department_id%TYPE, 
+            p_department_name   IN ch09_departments.department_name%TYPE, 
+            p_parent_id         IN ch09_departments.parent_id%TYPE,
+            p_flag              IN VARCHAR2)
+IS
+    vn_cnt1 NUMBER := 0;
+    vn_cnt2 NUMBER := 0; 
+BEGIN
+    IF p_flag = 'upsert' THEN
+        MERGE INTO ch09_departments a
+        USING (SELECT p_department_id as department_id
+               from dual) b
+           ON (a.department_id = b.department_id)
+        WHEN MATCHED THEN
+            UPDATE SET a.department_id = p_department_id, 
+                       a.department_name = p_department_name, 
+                       a.parent_id = p_parent_id
+        WHEN NOT MATCHED THEN 
+            INSERT (a.department_id, a.department_name, a.parent_id)
+            VALUES (p_department_id, p_department_name, p_parent_id);
+            
+    ELSE IF p_flag = 'delete' THEN
+        
+        SELECT COUNT(*)
+        INTO vn_cnt1
+        FROM ch09_departments
+        WHERE department_id = p_department_id;
+        
+        IF vn_cnt1 = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('해당 부서는 존재하지 않습니다.');
+            RETURN;
+        END IF;
+        
+        SELECT COUNT(*)
+        INTO vn_cnt2
+        FROM employees e
+        WHERE e.department_id = p_department_id;
+        
+        IF vn_cnt2 > 0 THEN
+            DBMS_OUTPUT.PUT_LINE('해당 부서에 아직 사원이 배정 되어 있습니다.');
+            RETURN;
+        END IF;
+        
+        DELETE ch09_departments
+	    WHERE department_id = p_department_id;
+        
+    END IF;
+    COMMIT;
+END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
