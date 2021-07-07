@@ -125,4 +125,14 @@ from ranking
 where info_id = 'M_H_1';
 
 -- 검색 쿼리
-SELECT BigC_id, SmallC_id FROM information WHERE keyword LIKE ('%컨저링%');
+SELECT concat(SmallC_id,BigC_id) as newname, count(newname) 
+FROM information 
+WHERE keyword LIKE ('%공포%')
+GROUP BY newname
+HAVING COUNT(newname) > 1;
+
+SELECT distinct SmallC_id ||' '|| BigC_id as category FROM information WHERE keyword LIKE ('%컨저링%');
+
+SELECT BigC_id, SmallC_id COUNT(BigC_id) FROM information GROUP BY video_id HAVING COUNT(*) > 1; 
+
+select info_name from information;
